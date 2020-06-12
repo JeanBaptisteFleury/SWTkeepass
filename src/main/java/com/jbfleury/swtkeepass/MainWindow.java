@@ -7,8 +7,22 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.layout.GridData;
+import swing2swt.layout.BorderLayout;
+import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.events.ArmListener;
+import org.eclipse.swt.events.ArmEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormLayout;
+import swing2swt.layout.BoxLayout;
+import com.jbfleury.swtkeepass.KdbxBrowser;
 
 public class MainWindow {
+	
+	private Composite main_composite;
+	private KdbxBrowser kdbx_browser_composite;
 
 	protected Shell shlSwtkeepass;
 
@@ -45,9 +59,9 @@ public class MainWindow {
 	 */
 	protected void createContents() {
 		shlSwtkeepass = new Shell();
-		shlSwtkeepass.setSize(450, 300);
+		shlSwtkeepass.setSize(732, 561);
 		shlSwtkeepass.setText("SWTKeepass");
-		shlSwtkeepass.setLayout(new GridLayout(1, false));
+		shlSwtkeepass.setLayout(new StackLayout());
 		
 		Menu menu = new Menu(shlSwtkeepass, SWT.BAR);
 		shlSwtkeepass.setMenuBar(menu);
@@ -71,7 +85,28 @@ public class MainWindow {
 		mntmHelp.setMenu(menu_2);
 		
 		MenuItem mntmAboutSwtkeepass = new MenuItem(menu_2, SWT.NONE);
-		mntmAboutSwtkeepass.setText("About SWTKeepass");
 
+		mntmAboutSwtkeepass.setText("About SWTKeepass");
+		
+		main_composite = new Composite(shlSwtkeepass, SWT.NONE);
+		main_composite.setLayout(new BorderLayout(0, 0));
+		
+		kdbx_browser_composite = new KdbxBrowser(shlSwtkeepass, SWT.NONE);
+		kdbx_browser_composite.setLayout(new BorderLayout(0, 0));
+		kdbx_browser_composite.setVisible(false);
+		
+		Label lblNewLabel = new Label(main_composite, SWT.NONE);
+		lblNewLabel.setLayoutData(BorderLayout.CENTER);
+		lblNewLabel.setText("Welcome");
+
+		mntmAboutSwtkeepass.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				System.out.println("About btn clicked");
+				main_composite.setVisible(false);
+				main_composite.dispose();
+				kdbx_browser_composite.setVisible(true);
+			}
+		});
 	}
 }
